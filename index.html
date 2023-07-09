@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todolist</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+        integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+</head>
+
+<body>
+    <div class="container">
+        <div class="title" id="title1">Todo List
+            <div id="time"></div>
+        </div>
+        <div class="task"><input type="text" name="" id="additem" placeholder="new task">
+            <button>
+                Add
+            </button>
+        </div>
+        <ul> 
+            <li> 
+                <span id="list">Lists</span>
+                <!-- <input type=checkbox  onclick="toggle(this)" style="height: 20px; width: 20px;">
+                <span>first</span>
+                   <i class=" fas fa-duotone fa-trash delete"></i> -->
+               
+
+            </li>
+
+
+
+        </ul>
+    </div>
+</body>
+<script src="https://unpkg.com/typed.js@2.0.16/dist/typed.umd.js"></script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+<script>
+  function removeItem(id) {
+      localStorage.removeItem(id);
+      $('li[data-id="' + id + '"]').remove();
+    }
+
+    $(document).ready(function() {
+    //   localStorage.clear();
+
+      function generateUniqueId() {
+        return Math.random().toString(36).substr(2, 9);
+      }
+
+      $("button").click(function() {
+        var item = $("#additem").val();
+
+        if (item) {
+          var id = generateUniqueId();
+          var value = '<li data-id="' + id + '">' +
+                      '<input type="checkbox" onclick="toggle(this)" style="height: 20px; width: 20px;">' +
+                      '<span>' + item + '</span>' +
+                      '<i class="fas fa-duotone fa-trash delete" onclick="removeItem(\'' + id + '\')"></i>' +
+                      '</li>';
+
+          localStorage.setItem(id, JSON.stringify({ item: item, completed: false }));
+
+          $("ul").append(value);
+          $("#additem").val("");
+        } else {
+          alert("Please enter an item first");
+        }
+      });
+
+      // Load items from localStorage
+      for (var i = 0; i < localStorage.length; i++) {
+        var id = localStorage.key(i);
+        var itemData = JSON.parse(localStorage.getItem(id));
+
+        var value = '<li data-id="' + id + '">' +
+                    '<input type="checkbox" onclick="toggle(this)" style="height: 20px; width: 20px;">' +
+                    '<span>' + itemData.item + '</span>' +
+                    '<i class="fas fa-duotone fa-trash delete" onclick="removeItem(\'' + id + '\')"></i>' +
+                    '</li>';
+
+        $("ul").append(value);
+
+        if (itemData.completed) {
+          $('li[data-id="' + id + '"] input[type="checkbox"]').prop('checked', true);
+        }
+      }
+    });
+
+    function toggle(checkbox) {
+        // $(checkbox).closest("li").toggleClass("active");
+
+      var id = $(checkbox).closest('li').data('id');
+      var itemData = JSON.parse(localStorage.getItem(id));
+      itemData.completed = checkbox.checked;
+      localStorage.setItem(id, JSON.stringify(itemData));
+    }
+    var time=new Date();
+    var day=time.getDay();
+    var date=time.getDate();
+    var mon=time.getMonth();
+    var dayar=["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]
+    var arr=["January","February","March","April","May","June","July","August","September","October","November","December"]
+    document.getElementById('time').innerText=dayar[day]+", "+date+" "+arr[mon];
+    // function toggle(checkbox) {
+        // $(checkbox).closest("li").toggleClass("active");
+    //     }
+//     var typed = new Typed('#title1', {
+//     strings: ["Todo List"],
+//     typeSpeed: 90,
+//   });        
+</script>
+
+</html>
