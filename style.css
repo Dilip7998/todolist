@@ -30,8 +30,7 @@ background: linear-gradient(to right, #ebecef, #373B44); /* W3C, IE 10+/ Edge, F
 
 .task{ 
 
-    height: 50px;
-    padding: 5px;
+    
     /* border: 2px solid white; */
     display: flex;
     justify-content: space-evenly;
